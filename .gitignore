@@ -4,6 +4,7 @@
 !*.txt
 !*.gitignore
 !*ini
+!/**/
 
 
 
