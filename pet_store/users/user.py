@@ -71,7 +71,9 @@ class User:
         response = self._session.delete(f"{self._url}/{username}")
         return response
 
-url = sys.argv[1]
+
+url = 'https://petstore3.swagger.io/api/v3'
+# sys.argv[1]
 users = User(url)
 
 user_1 = {

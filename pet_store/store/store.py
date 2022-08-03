@@ -9,13 +9,13 @@ class Store:
         self._session = requests.session()
         self._session.headers = self._headrs
 
-# TODO test!
+
     def get_inventory(self):
         """
         :return:status
         """
         response = self._session.get(f"{self._url}/store/inventory")
-        return response.text
+        return response.status_code
 
     def add_new_order(self, order: dict):
         """
@@ -68,7 +68,7 @@ order_3 = {
     "complete": True
 }
 
-url = sys.argv[1]
+url = 'https://petstore3.swagger.io/api/v3'
 my_store = Store(url)
 
 
