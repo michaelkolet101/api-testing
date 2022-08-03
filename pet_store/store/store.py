@@ -1,5 +1,5 @@
 import requests
-
+import sys
 
 class Store:
 
@@ -68,7 +68,8 @@ order_3 = {
     "complete": True
 }
 
-my_store = Store("https://petstore3.swagger.io/api/v3")
+url = sys.argv[1]
+my_store = Store(url)
 
 
 print(my_store.get_inventory())

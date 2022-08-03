@@ -1,9 +1,12 @@
 import pytest
+import sys
 import logging
 from pet_api import PetApi
 from pet_api import pet_2, pet_3, pet_4
 
-pet_store = PetApi("https://petstore3.swagger.io/api/v3")
+# sys.argv[1]
+url = 'https://petstore3.swagger.io/api/v3'
+pet_store = PetApi(url)
 
 
 def test_to_get_pet_by_id():
@@ -35,6 +38,11 @@ def test_find_by_status():
             check = False
     logging.info("test to test_find_by_status")
     assert check
+
+# TODO
+def test_find_by_tags():
+    assert 200 == pet_store.add_new_pet(pet_4)
+    assert 200 == pet_store.find_by_tags(pet_4['tags'])
 
 
 def test_update_pet_by_id_post():

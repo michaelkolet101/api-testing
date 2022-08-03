@@ -1,8 +1,6 @@
 import json
 import requests
-from requests.auth import HTTPBasicAuth
-
-
+import sys
 
 
 class PetApi:
@@ -21,7 +19,7 @@ class PetApi:
             return "pet not pound"
         return response.json()
 
-    def add_new_pet(self, new_pet: dict):
+    def add_new_pet(self, new_pet: json):
         response = self._session.post(f"{self._url}/pet", data=new_pet)
         return response.status_code
 
@@ -34,23 +32,27 @@ class PetApi:
         return response.status_code
 
     def find_by_status(self, _status):
+        """
+        :param _status:
+        :return:json data
+        """
         response = self._session.get(f"{self._url}/pet/findByStatus?status={self.status[_status]}")
         return response.json()
 
-# TODO fix that!!
-    def find_by_tags(self, tags: list):
-        string_tags = ""
-        for tag in tags:
-            string_tags += f"{tag}"
-        response = self._session.get(f"{self._url}/pet/findByStatus?tags={string_tags}")
-        return response.json()
+    def find_by_tags(self, tags: dict):
+        """
+        :param tags:
+        :return: status
+        """
+        response = self._session.get(f"{self._url}/pet/findByStatus?tags={tags}")
+        return response.status_code
 
     def update_pet_by_id_post(self, pet_id: int, new_name: str, new_status):
         """
         :param pet_id:
         :param new_name:
         :param new_status:
-        :return:
+        :return: status
         """
         new_data = self.get_pet_ById(pet_id)
         new_data['name'] = new_name
@@ -67,13 +69,19 @@ class PetApi:
         return response.status_code
 
     def upload_image_by_id(self, pet_id: int, image: str):
+        """
+        :param pet_id:
+        :param image:
+        :return: status
+        """
         response = self._session.post(f"{self._url}/pet/{pet_id}/uploadImage",headers={'Content-Type': 'application/octet-stream'}, data=image)
         return response.status_code
 
 
 cat_category = {"id": 2, "name": "Cats"}
 
-url = "https://petstore3.swagger.io/api/v3"
+url = 'https://petstore3.swagger.io/api/v3'
+# sys.argv[1]
 
 pet_1 = {
             "id": 100,
@@ -121,17 +129,19 @@ pet_5 = {
 
 
 pet_store = PetApi(url)
-print(pet_store.add_new_pet(pet_1))
+
+print('add_new_pet', pet_store.add_new_pet(pet_1))
+
 print(pet_store.get_pet_ById(100))
 print(pet_store.update_pet_by_id(100, pet_4))
 print(pet_store.get_pet_ById(100))
 print(pet_store.find_by_status("available"))
 lst = ["id"]
-#print(pet_store.find_by_tags(lst))
+
 print("befor up", pet_store.get_pet_ById(100))
 print(pet_store.update_pet_by_id_post(100, "mich", "available"))
 print("after up", pet_store.get_pet_ById(100))
-
+print('find_by_tags', pet_store.find_by_tags( {'hhj': 'ffg'}))
 print("befor del", pet_store.get_pet_ById(100))
 pet_store.delete_pet_by_id(100)
 print("after del", pet_store.get_pet_ById(100))
