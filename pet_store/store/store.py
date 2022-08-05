@@ -15,7 +15,7 @@ class Store:
         :return:status
         """
         response = self._session.get(f"{self._url}/store/inventory")
-        return response.status_code
+        return response.text
 
     def add_new_order(self, order: dict):
         """
@@ -31,10 +31,7 @@ class Store:
         :return: json with the order or status in fail
         """
         response = self._session.get(f"{self._url}/store/order/{order_id}")
-        status = response.status_code
-        if status != 200:
-            return status
-        return response.json()
+        return response.text
 
     def delete_order_by_id(self, order_id):
         response = self._session.delete(f"{self._url}/store/order/{order_id}")
@@ -76,3 +73,4 @@ print(my_store.get_inventory())
 print(my_store.add_new_order(order_1))
 print(my_store.find_order_by_id(11))
 print(my_store.delete_order_by_id(10))
+print(my_store.find_order_by_id(10))

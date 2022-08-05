@@ -19,7 +19,15 @@ class PetApi:
             return "pet not pound"
         return response.json()
 
+    def get_pet_ById_status(self, _id: int):
+        response = self._session.get(f"{self._url}/pet/{_id}")
+        return response.status_code
+
     def add_new_pet(self, new_pet: json):
+        """
+        :param new_pet:
+        :return:status
+        """
         response = self._session.post(f"{self._url}/pet", data=new_pet)
         return response.status_code
 
@@ -39,12 +47,13 @@ class PetApi:
         response = self._session.get(f"{self._url}/pet/findByStatus?status={self.status[_status]}")
         return response.json()
 
+# TODO ask for help
     def find_by_tags(self, tags: dict):
         """
         :param tags:
         :return: status
         """
-        response = self._session.get(f"{self._url}/pet/findByStatus?tags={tags}")
+        response = self._session.get(f"{self._url}/pet/findByStatus?tags={(tags)}")
         return response.status_code
 
     def update_pet_by_id_post(self, pet_id: int, new_name: str, new_status):
@@ -74,7 +83,7 @@ class PetApi:
         :param image:
         :return: status
         """
-        response = self._session.post(f"{self._url}/pet/{pet_id}/uploadImage",headers={'Content-Type': 'application/octet-stream'}, data=image)
+        response = self._session.post(f"{self._url}/pet/{pet_id}/uploadImage", headers={'Content-Type': 'application/octet-stream'}, data=image)
         return response.status_code
 
 
@@ -88,7 +97,7 @@ pet_1 = {
             "name": "max",
             "category": {"id": 3, "name": "Dragon"},
             "photoUrls": ["string"],
-            "tags": [{"id": 0, "name": "string"}],
+            "tags": [{"id": 200, "name": "jonson"}],
             "status": "available"
         }
 pet_2 = {
@@ -131,19 +140,11 @@ pet_5 = {
 pet_store = PetApi(url)
 
 print('add_new_pet', pet_store.add_new_pet(pet_1))
-
 print(pet_store.get_pet_ById(100))
-print(pet_store.update_pet_by_id(100, pet_4))
+pet_1['name'] = 'MAXA!!!'
+print(pet_store.update_pet_by_id(100, pet_1))
 print(pet_store.get_pet_ById(100))
 print(pet_store.find_by_status("available"))
-lst = ["id"]
+print(pet_store.find_by_tags(pet_1['tags']))
 
-print("befor up", pet_store.get_pet_ById(100))
-print(pet_store.update_pet_by_id_post(100, "mich", "available"))
-print("after up", pet_store.get_pet_ById(100))
-print('find_by_tags', pet_store.find_by_tags( {'hhj': 'ffg'}))
-print("befor del", pet_store.get_pet_ById(100))
-pet_store.delete_pet_by_id(100)
-print("after del", pet_store.get_pet_ById(100))
-
-print(pet_store.upload_image_by_id(10, 'hhh.jpg'))
+print(pet_store.upload_image_by_id(100, 'jjj.jpg'))

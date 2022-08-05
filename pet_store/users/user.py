@@ -45,7 +45,7 @@ class User:
         response = self._session.get(f'{self._url}/user/logout')
         return response.status_code
 
-    def get_user_by_user_name(self, user_name) -> json:
+    def get_user_by_user_name(self, user_name) -> str:
         """
         :param user_name:
         :return: json
@@ -77,7 +77,7 @@ url = 'https://petstore3.swagger.io/api/v3'
 users = User(url)
 
 user_1 = {
-  "id": 10,
+  "id": 10101010,
   "username": "theUser!!!",
   "firstName": "John",
   "lastName": "James",
@@ -126,12 +126,5 @@ json_list = [json.dumps(item) for item in list_of_users]
 
 
 
-print(list_of_users)
 print(users.create_user(user_1))
-print('create_with_list' ,users.create_with_list(json.dumps(list_of_users)))
-print('login', users.login(user_2['username'], user_2['password']))
-print('logout', users.logout())
-print(users.get_user_by_user_name('theUser'))
-print('Update_user',users.Update_user(user_3, 'theUser'))
-print(users.create_user(user_1))
-print(users.delete_username(user_1['username']))
+print(users.get_user_by_user_name("gggf"))

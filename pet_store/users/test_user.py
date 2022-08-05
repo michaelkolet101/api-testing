@@ -6,8 +6,12 @@ from user import users, user_1, user_2, user_3, user_4 ,list_of_users
 
 @allure.step
 def test_create_user():
-    logging.info('test_create_user')
-    assert 200 == users.create_user(user_1) or 500 == users.create_user(user_1)
+    user_name = user_1["username"]
+    status = users.create_user(user_1)
+    logging.info(f'test_create_user. satus = {status}')
+    assert 200 == status
+    data = users.get_user_by_user_name(user_name)
+    assert data['user_name'] == user_name
 
 @allure.step
 def test_create_with_list():
