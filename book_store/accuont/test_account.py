@@ -1,52 +1,86 @@
 import logging
-
-from Account import acuont, ac_1, ac_2, ac_3
+from generat_string import g_s
+from Account import acuont, ac_1
 from Account import Account
 import pytest
 import allure
+import sys
 
+# https://bookstore.toolsqa.com/Account/v1
+# if sys.argv[1] == None:
+#     URL = 'https://bookstore.toolsqa.com/Account/v1/'
+# else:
+#     URL = sys.argv[1]
 
-LIST_OF_RESILT = [200, 201, 204, 400, 401, 404, 406]
+URL = "https://bookstore.toolsqa.com/Account/v1"
+
+acuont = Account(URL)
+
 
 @allure.step
 def test_Authorized():
-    status = acuont.Authorized(ac_1)
-    assert status in LIST_OF_RESILT
-    logging.info(f"test_Authorized status: {status}")
+    ac_1['userName'] = g_s()
+    data = acuont.add_user_account_get_id(ac_1)
+    user_id = data['userID']
+    logging.info(f"user_id: {user_id}")
+    data_2 = acuont.Generate_token(ac_1)
+    authorize = acuont.Authorized(ac_1)
+    logging.info(f"authorize: {authorize}, data_of_token is: {data_2}")
+    assert authorize == True
+
+
 
 @allure.step
 def test_Generate_token():
-    ans = acuont.Generate_token(ac_1)
-    assert ans['status'] == 'Success'
-    logging.info(f"test_Generate_token, \ndict is: {ans}")
+    ac_1['userName'] = g_s()
+    assert 400 > acuont.add_user_account(ac_1)
+    data = acuont.Generate_token(ac_1)
+    assert 'Success' in data.values()
+    logging.info(f"test_Generate_token, \ndict is: {data}")
+
 
 @allure.step
 def test_add_user_account():
-    status = acuont.add_user_account(ac_3)
-    assert status in LIST_OF_RESILT
-    msg = ""
-    if status == 406:
-        msg = "msg is: There is already a user"
-    logging.info(f"test_add_user_account, status = {status}\n {msg}!!!")
+    ac_1['userName'] = g_s()
+    data = acuont.add_user_account_get_id(ac_1)
+    logging.info(data)
+    user_id = data['userID']
+    logging.info(f"user_id: {user_id}")
+    assert 'userID' in data.keys()
+
+
+
+
 
 @allure.step
 def test_delete_user_by_id():
     # it is user id ask swagger
-    status = acuont.delete_user_by_id('88fc69d2-db32-4846-bd1f-d2df2eacf10a')
-    assert status in LIST_OF_RESILT
+    ac_1['userName'] = g_s()
+    data = acuont.add_user_account_get_id(ac_1)
+    user_id = data['userID']
+    logging.info(f"user_id: {user_id}")
+    acuont.Generate_token(ac_1)
+    authorize = acuont.Authorized(ac_1)
+    logging.info(authorize)
+    status = acuont.delete_user_by_id(user_id)
     msg = ""
     if status == 401:
         msg = 'msg is: user not authoriz!!!'
     logging.info(f'test_delete_user_by_id, status is: {status}\n {msg}')
+    assert status != 401
+
 
 @allure.step
 def test_get_user_by_id():
-    status = acuont.get_user_by_id('88fc69d2-db32-4846-bd1f-d2df2eacf10a')
-    assert status in LIST_OF_RESILT
-    if status == 401:
-        msg = 'msg is: user not found!!!'
-    logging.info(f'get_user_by_id, status is: {status}\n {msg}')
-
-
-
+    ac_1['userName'] = g_s()
+    data = acuont.add_user_account_get_id(ac_1)
+    logging.info(data)
+    user_id = data['userID']
+    logging.info(user_id)
+    acuont.Generate_token(ac_1)
+    auto = acuont.Authorized(ac_1)
+    logging.info(auto)
+    data = acuont.get_user_by_id(user_id)
+    logging.info(data)
+    assert 'userId' in data.keys()
 
