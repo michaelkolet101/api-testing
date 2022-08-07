@@ -1,6 +1,7 @@
 import json
 import sys
-
+import random
+from genert_string import g_s
 import requests
 
 
@@ -60,7 +61,7 @@ class User:
         :return: status
         """
 
-        response = self._session.post(f'{self._url}/user/{user_name_to_change}', data=json.dumps(user_info))
+        response = self._session.post(f'{self._url}/user/{user_name_to_change}', data=(user_info))
         return response.content
     
     def delete_username(self, username: str):
@@ -77,8 +78,8 @@ url = 'https://petstore3.swagger.io/api/v3'
 users = User(url)
 
 user_1 = {
-  "id": 10101010,
-  "username": "theUser!!!",
+  "id": random.randint(0, 100000),
+  "username": g_s(),
   "firstName": "John",
   "lastName": "James",
   "email": "john@email.com",
@@ -88,8 +89,8 @@ user_1 = {
 }
 
 user_2 = {
-  "id": 100,
-  "username": "theUser",
+  "id": random.randint(0, 100000),
+  "username": g_s(),
   "firstName": "Mich",
   "lastName": "Kolet",
   "email": "john@email.com",
@@ -99,8 +100,8 @@ user_2 = {
 }
 
 user_3 = {
-  "id": 100,
-  "username": "max",
+  "id": random.randint(0, 100000),
+  "username": g_s(),
   "firstName": "Mich",
   "lastName": "Kolet",
   "email": "john@email.com",
@@ -109,8 +110,8 @@ user_3 = {
   "userStatus": 1
 }
 user_4 = {
-  "id": 101,
-  "username": "maxim",
+  "id": random.randint(0, 100000),
+  "username": g_s(),
   "firstName": "Michl",
   "lastName": "Kolet",
   "email": "john@email.com",
@@ -120,11 +121,8 @@ user_4 = {
 }
 
 
-
-list_of_users = [user_1, user_2]
-json_list = [json.dumps(item) for item in list_of_users]
+list_of_users = [user_1, user_2, user_3, user_4]
 
 
 
-print(users.create_user(user_1))
-print(users.get_user_by_user_name("gggf"))
+

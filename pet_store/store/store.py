@@ -1,4 +1,7 @@
 import requests
+import json
+from pet_store.users import genert_string
+import random
 import sys
 
 class Store:
@@ -39,28 +42,10 @@ class Store:
 
 
 order_1 = {
-    "id": 11,
-    "petId": 198772,
+    "id": random.randint(0, 1000),
+    "petId": random.randint(0, 1000),
     "quantity": 7,
     "shipDate": "2022-08-01T14:16:51.403Z",
-    "status": "approved",
-    "complete": True
-}
-
-order_2 = {
-    "id": 12,
-    "petId": 100,
-    "quantity": 17,
-    "shipDate": "2022-09-01T14:16:51.403Z",
-    "status": "approved",
-    "complete": True
-}
-
-order_3 = {
-    "id": 13,
-    "petId": 101,
-    "quantity": 1,
-    "shipDate": "2022-09-05T14:16:51.403Z",
     "status": "approved",
     "complete": True
 }
@@ -71,6 +56,6 @@ my_store = Store(url)
 
 print(my_store.get_inventory())
 print(my_store.add_new_order(order_1))
-print(my_store.find_order_by_id(11))
-print(my_store.delete_order_by_id(10))
-print(my_store.find_order_by_id(10))
+print(my_store.find_order_by_id(order_1['id']))
+print(my_store.delete_order_by_id(order_1['id']))
+print(my_store.find_order_by_id(order_1['id']))
