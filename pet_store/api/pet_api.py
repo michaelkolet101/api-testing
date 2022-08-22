@@ -1,6 +1,9 @@
 import json
+from pet_store.data.tags import *
+from pet_store.data.pet import *
+
 import requests
-from generat_string import g_s
+from pet_store.data.generat_string import g_s
 import random
 import sys
 
@@ -15,22 +18,21 @@ class PetApi:
         self._session = requests.session()
         self._session.headers = self._headrs
 
-    def get_pet_ById(self, _id: int):
-        response = self._session.get(f"{self._url}/pet/{_id}")
-        if response.status_code == 404:
-            return "pet not pound"
-        return response.json()
+    def get_pet_ById(self, pet_id: int) -> Pet:
+        response = self._session.get(f"{self._url}/pet/{pet_id}")
+        return Pet(**response.json())
 
-    def get_pet_ById_status(self, _id: int):
-        response = self._session.get(f"{self._url}/pet/{_id}")
+    def get_pet_ById_status(self, pet_id: int):
+        response = self._session.get(f"{self._url}/pet/{pet_id}")
         return response.status_code
 
-    def add_new_pet(self, new_pet: json):
+    def add_new_pet(self, new_pet: Pet) -> int:
         """
         :param new_pet:
         :return:status
         """
-        response = self._session.post(f"{self._url}/pet", data=new_pet)
+        pet_data = new_pet.to_json()
+        response = self._session.post(f"{self._url}/pet", data=pet_data)
         return response.status_code
 
     def update_pet_by_id(self, pet_id: int, new_data: json):
@@ -41,22 +43,26 @@ class PetApi:
         response = self._session.put(url=f"{self._url}/pet", data=new_data)
         return response.status_code
 
-    def find_by_status(self, _status):
+    def find_by_status(self, _status) -> [Pet]:
         """
         :param _status:
         :return:json data
         """
         response = self._session.get(f"{self._url}/pet/findByStatus?status={self.status[_status]}")
-        return response.json()
+        return Pet(**response.json())
 
-     # TODO andersend how to send this data
-    def find_by_tags(self, tags: [dict]):
-        """
-        :param tags:
-        :return: status
-        """
-        response = self._session.get(f"{self._url}/pet/findByStatus?tags={tags}")
-        return response.json
+
+    def get_pet_by_tags(self, tags: Tags) -> [Pet]:
+        tagsString = f'tags={tags[0]}'
+        if not isinstance(tags, list):
+            raise TypeError("tags must be a list of strings!")
+        if len(tags) > 1:
+            for tag in range(1, len(tags)):
+                if not isinstance(tags[tag], str):
+                    raise TypeError("one or more of the tags is not a string!")
+                tagsString += f'&tags={tags[tag]}'
+        res = self._session.get(url=f"{self._url}/pet/findByTags?{tagsString}")
+        return res
 
     def update_pet_by_id_post(self, pet_id: int, new_name: str, new_status):
         """
@@ -105,20 +111,20 @@ pet_1 = {
 
 
 
-pet_store = PetApi(url)
-
-def main():
-    print('add_new_pet', pet_store.add_new_pet(pet_1))
-    print(pet_store.get_pet_ById(100))
-    new_name = g_s()
-    pet_1['name'] = new_name
-    print('update_pet_by_id', pet_store.update_pet_by_id(100, pet_1))
-    print(pet_store.get_pet_ById(100))
-    print(pet_store.find_by_status("available"))
-    print('find_by_tags', pet_store.find_by_tags(pet_1['tags']))
-
-    print(pet_store.upload_image_by_id(100, 'jjj.jpg'))
-
-
-if __name__ == "__main__":
-    main()
+# pet_store = PetApi(url)
+#
+# def main():
+#     print('add_new_pet', pet_store.add_new_pet(pet_1))
+#     print(pet_store.get_pet_ById(100))
+#     new_name = g_s()
+#     pet_1['name'] = new_name
+#     print('update_pet_by_id', pet_store.update_pet_by_id(100, pet_1))
+#     print(pet_store.get_pet_ById(100))
+#     print(pet_store.find_by_status("available"))
+#     print('find_by_tags', pet_store.find_by_tags(pet_1['tags']))
+#
+#     print(pet_store.upload_image_by_id(100, 'jjj.jpg'))
+#
+#
+# if __name__ == "__main__":
+#     main()
