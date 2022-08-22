@@ -1,51 +1,53 @@
 import logging
 import pytest
 import allure
-from store import Store, my_store, order_1
+from pet_store.test.fixtures.pet_store_fixtures import *
+from pet_store.data.order import *
 import json
 
 
-
-@allure.step
-def test_add_new_order():
-    assert 200 == my_store.delete_order_by_id(order_1['id'])
-    status = my_store.add_new_order(order_1)
-    logging.info(status)
-    logging.info(order_1['id'])
-    assert 200 == status
-    data = my_store.find_order_by_id(order_1['id'])
-    d = json.loads(data)
-    logging.info(d)
-    assert order_1['id'] in d.values()
-
-
-@allure.step
-def test_find_order_by_id():
-    order_id = order_1['id']
-    logging.info(order_id)
-    assert 200 == my_store.delete_order_by_id(order_id)
-    assert 200 == my_store.add_new_order(order_1)
-    data = my_store.find_order_by_id(order_id)
-    d = json.loads(data)
-    logging.info(d)
-    assert d['id'] == order_1['id']
-
-
-
-@allure.step
-def test_delete_order_by_id():
-    assert 200 == my_store.add_new_order(order_1)
-    order_id = order_1['id']
-    logging.info(order_id)
+def verification_order_not_exist(my_store, order_id):
     assert 200 == my_store.delete_order_by_id(order_id)
     data = my_store.find_order_by_id(order_id)
     logging.info(data)
     assert data == 'Order not found'
 
 
+def verification_order_add(my_store, MOrder):
+    status = my_store.add_new_order(MOrder)
+    logging.info(status)
+    logging.info(MOrder.id)
+    assert 200 == status
+    data = my_store.find_order_by_id(MOrder.id)
+    d = json.loads(data)
+    logging.info(d)
+    assert MOrder.id in d.values()
 
-@allure.step
-def test_get_inventory():
+def test_add_new_order(my_store, MOrder):
+    order_id = MOrder.id
+    verification_order_not_exist(my_store, order_id)
+    verification_order_add(my_store, MOrder)
+
+
+def test_find_order_by_id(my_store, MOrder):
+    order_id = MOrder.id
+    logging.info(order_id)
+    verification_order_not_exist(my_store, order_id)
+    verification_order_add(my_store, MOrder)
+    data = my_store.find_order_by_id(order_id)
+    d = json.loads(data)
+    logging.info(d)
+    assert d['id'] == order_1['id']
+
+
+def test_delete_order_by_id(my_store, MOrder):
+    verification_order_add(my_store, MOrder)
+    order_id = MOrder.id
+    logging.info(order_id)
+    verification_order_not_exist(my_store, order_id)
+
+
+def test_get_inventory(my_store, MOrder):
     data = my_store.get_inventory()
     logging.info(f"test_get_inventory, data = {data}")
     assert 'approved' in data

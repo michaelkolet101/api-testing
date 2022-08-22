@@ -1,6 +1,7 @@
 import requests
 import json
-from pet_store.users import genert_string
+from pet_store.data.generat_string import g_s
+from pet_store.data.order import *
 import random
 import sys
 
@@ -20,7 +21,7 @@ class Store:
         response = self._session.get(f"{self._url}/store/inventory")
         return response.text
 
-    def add_new_order(self, order: dict):
+    def add_new_order(self, order: Order):
         """
         :param order: dict with the order details
         :return:
@@ -28,15 +29,15 @@ class Store:
         response = self._session.post(f"{self._url}/store/order", data=order)
         return response.status_code
 
-    def find_order_by_id(self, order_id: int):
+    def find_order_by_id(self, order_id: int) -> Order:
         """
         :param order_id:
         :return: json with the order or status in fail
         """
         response = self._session.get(f"{self._url}/store/order/{order_id}")
-        return response.text
+        return Order(*response.json())
 
-    def delete_order_by_id(self, order_id):
+    def delete_order_by_id(self, order_id) -> int:
         response = self._session.delete(f"{self._url}/store/order/{order_id}")
         return response.status_code
 

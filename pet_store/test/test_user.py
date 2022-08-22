@@ -2,63 +2,72 @@ import json
 import logging
 import pytest
 import allure
-from user import users, user_1, user_2, user_3, user_4, list_of_users
 
-@allure.step
-def test_create_user():
-    user_name = user_1["username"]
+from pet_store.test.fixtures.pet_store_fixtures import *
+
+
+
+
+def verification_user_add(users ,MUser):
+    user_name = MUser.username
     logging.info(user_name)
-    status = users.create_user(user_1)
+    status = users.create_user(MUser)
     logging.info(status)
     assert 200 == status
     data = users.get_user_by_user_name(user_name)
     logging.info(data)
-    assert data['username'] == user_name
+    assert data.username == user_name
 
-@allure.step
-def test_create_with_list():
-    my_list = list_of_users
-    logging.info(list_of_users)
-    j_list = [json.dumps(item) for item in list_of_users]
-    status = users.create_with_list(json.dumps(list_of_users))
+
+def test_create_user(MUser, users):
+    verification_user_add(users ,MUser)
+
+def test_create_with_list(uesrs_list, users):
+    my_list = uesrs_list
+    user_name1 = my_list[0].username
+    user_name2 = my_list[1].username
+    logging.info(my_list)
+    j_list = [json.dumps(item) for item in my_list]
+    status = users.create_with_list(json.dumps(my_list))
     logging.info(status)
-    assert (status == 200)
+    assert status == 200
+    assert user_name1 == users.get_user_by_user_name(user_name1).username
+    assert user_name2 == users.get_user_by_user_name(user_name2).username
 
 
-@allure.step
-def test_login():
-    assert 200 == users.create_user(user_4)
-    assert 200 == users.login(user_4["username"], user_4["password"])
+
+def test_login(MUser, users):
+    verification_user_add(users ,MUser)
+    assert 200 == users.login(MUser.username, MUser.password)
     logging.info("test to login")
 
-@allure.step
-def test_logout():
-    assert 200 == users.create_user(user_3)
+
+
+def test_logout(MUser, users):
+    verification_user_add(users ,MUser)
+    users.login(MUser.username, MUser.password)
     assert 200 == users.logout()
     logging.info("test_logout")
 
-@allure.step
-def test_get_user_by_user_name():
-    assert users.create_user(user_1) == 200
-    name = user_1['username']
+
+
+def test_get_user_by_user_name(MUser, users):
+    verification_user_add(users ,MUser)
+    name = MUser.username
     logging.info(name)
-    assert name == users.get_user_by_user_name(name)['username']
+    assert name == users.get_user_by_user_name(name).username
 
 
-@allure.step
-def test_Update_user():
-    assert 200 == users.create_user(user_3)
-    user_6 = user_3
-    logging.info(user_6)
-    user_6['username'] = 'max'
-    logging.info(user_6)
-    assert 200 == users.Update_user(user_6, user_3['username'])
+def test_Update_user(MUser, users):
+    verification_user_add(users ,MUser)
+    MUser.username = "michael!!!"
+    res_put = users.Update_user(MUser)
+    assert res_put.json()["username"] == MUser.username
 
 
-@allure.step
-def test_delete_username():
-    assert 200 == users.create_user(user_4)
-    status = users.delete_username(user_4['username'])
+def test_delete_username(MUser, users):
+    verification_user_add(users ,MUser)
+    status = users.delete_username(User.username)
     logging.info(status.status_code)
     assert 200 == status.status_code
-
+    assert 404 == users.get_user_by_user_name

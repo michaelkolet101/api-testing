@@ -1,7 +1,8 @@
 import json
 import sys
 import random
-from genert_string import g_s
+from pet_store.data.user import *
+from pet_store.data.generat_string import g_s
 import requests
 
 
@@ -13,13 +14,14 @@ class User:
         self._session = requests.session()
         self._session.headers = self._headrs
 
-    def create_user(self, user_info: dict):
+    def create_user(self, user_info: User):
         """
         :param user_info:
         :return: status_code
         """
-        response = self._session.post(f'{self._url}/user', data=user_info)
-        return response.status_code
+        user_data = user_info.to_json()
+        res = self._session.post(url=f"{self._url}", data=user_data)
+        return res.status_code
 
     def create_with_list(self, users_list: json):
         """
@@ -46,23 +48,23 @@ class User:
         response = self._session.get(f'{self._url}/user/logout')
         return response.status_code
 
-    def get_user_by_user_name(self, user_name) -> str:
+    def get_user_by_user_name(self, user_name: str) -> User:
         """
         :param user_name:
-        :return: json
+        :return: User
         """
         response = self._session.get(f'{self._url}/user/{user_name}')
-        return response.json()
+        return User(*response.json())
 
-    def Update_user(self, user_info: dict, user_name_to_change: str):
+    def Update_user(self, user_info: User):
         """
         :param user_info:
         :param user_name_to_change:
         :return: status
         """
-
-        response = self._session.post(f'{self._url}/user/{user_name_to_change}', data=(user_info))
-        return response.content
+        user_data = user_info.to_json()
+        res = self._session.put(url=f"{self._url}/{user_info.username}", data=user_data)
+        return res
     
     def delete_username(self, username: str):
         """
