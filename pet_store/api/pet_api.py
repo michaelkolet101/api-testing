@@ -1,11 +1,15 @@
 import json
 from pet_store.data.tags import *
-from pet_store.data.pet import *
+from pet_store.data.pet import Pet
 
 import requests
 from pet_store.data.generat_string import g_s
 import random
 import sys
+
+url = "https://petstore3.swagger.io/api/v3"
+if len(sys.argv) > 1:
+    url = sys.argv[1]
 
 
 class PetApi:
@@ -22,7 +26,8 @@ class PetApi:
         response = self._session.get(f"{self._url}/pet/{pet_id}")
         return Pet(**response.json())
 
-    def get_pet_ById_status(self, pet_id: int):
+
+    def get_pet_ById_status(self, pet_id: int) -> int:
         response = self._session.get(f"{self._url}/pet/{pet_id}")
         return response.status_code
 
@@ -40,7 +45,7 @@ class PetApi:
         :param pet_id:
         :return: statuscode
         """
-        response = self._session.put(url=f"{self._url}/pet", data=new_data)
+        response = self._session.put(url=f"{self._url}/pet/{pet_id}", data=new_data)
         return response.status_code
 
     def find_by_status(self, _status) -> [Pet]:
@@ -97,34 +102,16 @@ class PetApi:
 
 cat_category = {"id": 2, "name": "Cats"}
 
-url = 'https://petstore3.swagger.io/api/v3'
-# sys.argv[1]
 
-pet_1 = {
-            "id": random.randint(0, 1000000),
-            "name": g_s(),
-            "category": {"id": 3, "name": "Dragon"},
-            "photoUrls": ["string"],
-            "tags": [{"id": 200, "name": "jonson"}],
-            "status": "available"
-        }
+# pet_1 = {
+#             "id": random.randint(0, 1000000),
+#             "name": g_s(),
+#             "category": {"id": 3, "name": "Dragon"},
+#             "photoUrls": ["string"],
+#             "tags": [{"id": 200, "name": "jonson"}],
+#             "status": "available"
+#         }
 
 
 
-# pet_store = PetApi(url)
-#
-# def main():
-#     print('add_new_pet', pet_store.add_new_pet(pet_1))
-#     print(pet_store.get_pet_ById(100))
-#     new_name = g_s()
-#     pet_1['name'] = new_name
-#     print('update_pet_by_id', pet_store.update_pet_by_id(100, pet_1))
-#     print(pet_store.get_pet_ById(100))
-#     print(pet_store.find_by_status("available"))
-#     print('find_by_tags', pet_store.find_by_tags(pet_1['tags']))
-#
-#     print(pet_store.upload_image_by_id(100, 'jjj.jpg'))
-#
-#
-# if __name__ == "__main__":
-#     main()
+

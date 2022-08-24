@@ -1,12 +1,27 @@
-from pet_store.data.pet import *
+
 from pet_store.api.pet_api import *
+from pet_store.api.user import *
 from pet_store.api.store import *
+
 from pet_store.data.order import *
 from pet_store.data.user import *
+from pet_store.data.category import *
+from pet_store.data.pet import *
+from pet_store.data.tags import *
+import sys
+
+
 import pytest
 from pet_store.data.generat_string import g_s
 import random
-url = 'https://petstore3.swagger.io/api/v3'
+
+
+@pytest.fixture()
+def set_url():
+    url = 'https://petstore3.swagger.io/api/v3'
+    if len(sys.argv) > 1:
+        url = sys.argv[1]
+    return url
 
 @pytest.fixture()
 def MPet() -> Pet:
@@ -18,14 +33,14 @@ def MPet() -> Pet:
 
 
 @pytest.fixture
-def my_store():
-    my_store = Store(url)
+def my_store(set_url):
+    my_store = Store(set_url)
     return my_store
 
 
 @pytest.fixture
-def new_pet_store():
-    my_store = PetApi(url)
+def new_pet_store(set_url):
+    my_store = PetApi(set_url)
     return my_store
 
 @pytest.fixture
@@ -39,9 +54,9 @@ def MUser() -> User:
     return my_user
 
 
-@pytest.fixture()
-def users() -> User:
-    return User(url)
+@pytest.fixture
+def users(set_url) -> User:
+    return User(set_url)
 
 
 def uesrs_list() -> [User]:

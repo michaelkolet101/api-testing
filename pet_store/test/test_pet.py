@@ -1,7 +1,10 @@
-import allure
+
 import logging
 import pytest
 from pet_store.test.fixtures.pet_store_fixtures import *
+
+
+
 
 def verification_pet_not_exist(new_pet_store,pet_id):
     assert 200 == new_pet_store.delete_pet_by_id(pet_id)

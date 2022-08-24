@@ -4,22 +4,15 @@ from pet_store.data import baseObj
 
 class Tags(baseObj):
 
-    def __init__(self, id=None, name=None):
+    def __init__(self, id: int, name: str):
         super().__init__()
-        
-        if id is not None:
-            if not str(id).isdigit():
-                raise TypeError("id must be a number!")
-            self._id = id
-        if name is not None:
-            if not isinstance(name, str):
-                raise TypeError("name must be a string!")
-            self._name = name
+        self._id = id
+        self._name = name
 
     @property
     def id(self):
-        """Gets the id of this Tags.  # noqa: E501
-        :return: The id of this Tags.  # noqa: E501
+        """Gets the id of this Tags.
+        :return: The id of this Tags.
         :rtype: int
         """
         return self._id
@@ -27,17 +20,15 @@ class Tags(baseObj):
     @id.setter
     def id(self, Id):
         """Sets the id of this Tags.
-        :param id: The id of this Tags.  # noqa: E501
+        :param id: The id of this Tags.
         :type: int
         """
-        if not str(Id).isdigit():
-            raise TypeError("id must be a number!")
         self._id = Id
 
     @property
     def name(self):
-        """Gets the name of this Tags.  # noqa: E501
-        :return: The name of this Tags.  # noqa: E501
+        """Gets the name of this Tags.
+        :return: The name of this Tags.
         :rtype: str
         """
         return self._name
@@ -48,6 +39,4 @@ class Tags(baseObj):
         :param name: The name of this Tags.  # noqa: E501
         :type: str
         """
-        if not isinstance(name, str):
-            raise TypeError("name must be a string!")
         self._name = name
