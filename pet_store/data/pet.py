@@ -1,4 +1,4 @@
-from pet_store.data import baseObj
+from pet_store.data.baseObj import *
 from pet_store.data.category import Category
 from pet_store.data.tags import Tags
 
@@ -18,7 +18,7 @@ class Pet(baseObj):
         if tags is not None:
             self.tags = tags
         if status is not None:
-            self.status = status[status]
+            self.status = status
 
     @property
     def id(self):

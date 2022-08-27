@@ -3,8 +3,6 @@ import json
 
 class baseObj:
 
-    def __init__(self):
-        pass
 
     def to_json(self) -> str:
         #return json.dumps(self.__dict__)

@@ -1,7 +1,8 @@
 import json
 from pet_store.data.tags import *
 from pet_store.data.pet import Pet
-
+from pet_store.data.baseObj import *
+import logging
 import requests
 from pet_store.data.generat_string import g_s
 import random
@@ -17,7 +18,7 @@ class PetApi:
     status = {"available": "available", "pending": "pending", "sold": "sold"}
 
     def __init__(self, url: str):
-        self._url = url
+        self._url = "https://petstore3.swagger.io/api/v3"
         self._headrs = {'accept': 'application/json'}
         self._session = requests.session()
         self._session.headers = self._headrs
@@ -36,6 +37,7 @@ class PetApi:
         :param new_pet:
         :return:status
         """
+        logging.info(type(new_pet))
         pet_data = new_pet.to_json()
         response = self._session.post(f"{self._url}/pet", data=pet_data)
         return response.status_code
@@ -82,12 +84,12 @@ class PetApi:
         response = self._session.post(f"{self._url}/pet/{pet_id}?name={new_name}&status={new_status}")
         return response.status_code
 
-    def delete_pet_by_id(self, pet_id: int):
+    def delete_pet_by_id(self, pet_id: str):
         """
         :param pet_id:
         :return:status
         """
-        response = self._session.delete(f"{self._url}/pet/{pet_id}")
+        response = self._session.delete(f"https://petstore3.swagger.io/api/v3/pet/{pet_id}")
         return response.status_code
 
     def upload_image_by_id(self, pet_id: int, image: str):

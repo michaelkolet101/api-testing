@@ -2,7 +2,7 @@
 from pet_store.api.pet_api import *
 from pet_store.api.user import *
 from pet_store.api.store import *
-
+from pet_store.data.baseObj import *
 from pet_store.data.order import *
 from pet_store.data.user import *
 from pet_store.data.category import *
@@ -27,10 +27,17 @@ def set_url():
 def MPet() -> Pet:
     category = Category(234, g_s())
     photoUrls = ["https://en.wikipedia.org/wiki/Cat#/media/File:Cat_poster_1.jpg"]
-    tags = [{"id": 200, "name": "jonson"}] #[Tags(3453445, "tag1")]
+    tags = [{"id": 200, "name": "jonson"}]
     my_pet = Pet(random.randint(0, 1000), g_s(), category, photoUrls, tags, "available")
     return my_pet
 
+
+my_pet = Pet(random.randint(0, 1000),
+             g_s(),
+             Category(234, g_s()),
+             ["https://en.wikipedia.org/wiki/Cat#/media/File:Cat_poster_1.jpg"],
+             [{"id": 200, "name": "jonson"}],
+             "available")
 
 @pytest.fixture
 def my_store(set_url):

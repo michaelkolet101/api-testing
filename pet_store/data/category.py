@@ -5,7 +5,6 @@ from pet_store.data.baseObj import baseObj
 class Category(baseObj):
 
     def __init__(self, id=None, name=None):
-        super().__init__()
         if id is not None:
             if not str(id).isdigit():
                 raise TypeError("id must be a number!")

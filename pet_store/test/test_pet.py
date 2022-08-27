@@ -10,10 +10,11 @@ def verification_pet_not_exist(new_pet_store,pet_id):
     assert 200 == new_pet_store.delete_pet_by_id(pet_id)
     data = new_pet_store.get_pet_ById_status(pet_id)
     assert data == 404
+    logging.info(f"pet {pet_id} delete")
 
 
 def verification_pet_add(new_pet_store, pet_id):
-    status = new_pet_store.add_new_pet(MPet)
+    status = new_pet_store.add_new_pet(my_pet)
     assert status == 200
     logging.info(f"add pet status = {status}")
     data = new_pet_store.get_pet_ById(pet_id)

@@ -1,41 +1,28 @@
-from pet_store.data import baseObj
+from pet_store.data.baseObj import baseObj
 import datetime
 
 
 class Order(baseObj):
 
     def __init__(self, id: int, petId: int, quantity=None, shipDate=None, status=None, complete=None):
-        super().__init__()
+
         self._id = None
         self._petId = None
         self._quantity = None
         self._shipDate = None
         self._status = None
         self._complete = None
-        if not str(id).isdigit():
-            raise TypeError("order id must be a integer!")
+
         self._id = id
-        if not str(petId).isdigit():
-            raise TypeError("order pet_id must be a integer!")
         self._petId = petId
-        if quantity is not None:
-            if not str(quantity).isdigit():
-                raise TypeError("order quantity must be a integer!")
-            self._quantity = quantity
-        if shipDate is not None:
-            if not isinstance(shipDate, datetime.datetime):
-                raise TypeError("order shipDate must be a datetime!")
-            self._shipDate = shipDate
-        if status is not None:
-            if not isinstance(status, str):
-                raise TypeError("status must be a string!")
-            if not status == "placed" and not status == "approved" and not status == "delivered":
-                raise ValueError("status must be one of: placed/approved/delivered")
-            self._status = status
-        if complete is not None:
-            if not isinstance(complete, bool):
-                raise TypeError("order complete must be a boolean!")
-            self._complete = complete
+
+        self._quantity = quantity
+
+        self._shipDate = shipDate
+
+        self._status = status
+
+        self._complete = complete
 
     @property
     def id(self):

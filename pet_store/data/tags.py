@@ -1,11 +1,10 @@
 # coding: utf-8
-from pet_store.data import baseObj
+from pet_store.data.baseObj import baseObj
 
 
 class Tags(baseObj):
 
     def __init__(self, id: int, name: str):
-        super().__init__()
         self._id = id
         self._name = name
 

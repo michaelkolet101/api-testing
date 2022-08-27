@@ -1,11 +1,10 @@
-from pet_store.data import baseObj
+from pet_store.data.baseObj import baseObj
 
 
 class User(baseObj):
 
     def __init__(self, id: int, username: str, password: str, firstName=None, lastName=None, email=None, phone=None,
                  userStatus=None):
-        super().__init__()
         self._id = None
         self._username = None
         self._password = None
