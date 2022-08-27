@@ -1,4 +1,4 @@
-
+import pytest
 from pet_store.api.pet_api import *
 from pet_store.api.user import *
 from pet_store.api.store import *
@@ -23,13 +23,13 @@ def set_url():
         url = sys.argv[1]
     return url
 
-@pytest.fixture()
-def MPet() -> Pet:
-    category = Category(234, g_s())
-    photoUrls = ["https://en.wikipedia.org/wiki/Cat#/media/File:Cat_poster_1.jpg"]
-    tags = [{"id": 200, "name": "jonson"}]
-    my_pet = Pet(random.randint(0, 1000), g_s(), category, photoUrls, tags, "available")
-    return my_pet
+
+# def MPet() -> Pet:
+#     category = Category(234, g_s())
+#     photoUrls = ["https://en.wikipedia.org/wiki/Cat#/media/File:Cat_poster_1.jpg"]
+#     tags = [{"id": 200, "name": "jonson"}]
+#     my_pet = Pet(random.randint(0, 1000), g_s(), category, photoUrls, tags, "available")
+#     return my_pet
 
 
 my_pet = Pet(random.randint(0, 1000),

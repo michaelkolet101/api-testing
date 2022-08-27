@@ -21,34 +21,37 @@ def verification_pet_add(new_pet_store, pet_id):
     assert data.id == pet_id
 
 
-def test_to_get_pet_by_id(new_pet_store, MPet):
-    pet_id = MPet.id
+def test_to_get_pet_by_id(new_pet_store):
+    pet_id = my_pet.id
     logging.info(pet_id)
     verification_pet_not_exist(new_pet_store, pet_id)
     verification_pet_add(new_pet_store, pet_id)
 
-def test_add_new_pet(new_pet_store, MPet):
-    pet_id = MPet.id
+def test_add_new_pet(new_pet_store):
+    pet_id = my_pet.id
     logging.info(pet_id)
     verification_pet_not_exist(new_pet_store, pet_id)
     verification_pet_add(new_pet_store, pet_id)
 
-def test_to_put_update_pet(new_pet_store, MPet):
-    pet_id = MPet.id
+
+
+
+def test_to_put_update_pet(new_pet_store,):
+    pet_id = my_pet.id
     verification_pet_not_exist(new_pet_store, pet_id)
     verification_pet_add(new_pet_store, pet_id)
     new_name = g_s()
     logging.info(new_name)
-    MPet.name = new_name
-    status = new_pet_store.update_pet_by_id(MPet.id, MPet)
+    my_pet.name = new_name
+    status = new_pet_store.update_pet_by_id(my_pet.id, my_pet)
     logging.info(status)
-    data = new_pet_store.get_pet_ById(MPet.id)
+    data = new_pet_store.get_pet_ById(my_pet.id)
     logging.info(data)
-    assert MPet.name == new_name
+    assert my_pet.name == new_name
 
 
 
-def test_find_by_status(new_pet_store, MPet):
+def test_find_by_status(new_pet_store):
     lst = new_pet_store.find_by_status("available")
     logging.info(lst)
     check = True

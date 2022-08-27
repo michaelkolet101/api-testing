@@ -14,7 +14,6 @@ if len(sys.argv) > 1:
 
 
 class PetApi:
-
     status = {"available": "available", "pending": "pending", "sold": "sold"}
 
     def __init__(self, url: str):
@@ -26,7 +25,6 @@ class PetApi:
     def get_pet_ById(self, pet_id: int) -> Pet:
         response = self._session.get(f"{self._url}/pet/{pet_id}")
         return Pet(**response.json())
-
 
     def get_pet_ById_status(self, pet_id: int) -> int:
         response = self._session.get(f"{self._url}/pet/{pet_id}")
@@ -50,14 +48,15 @@ class PetApi:
         response = self._session.put(url=f"{self._url}/pet/{pet_id}", data=new_data)
         return response.status_code
 
-    def find_by_status(self, _status) -> [Pet]:
-        """
-        :param _status:
-        :return:json data
-        """
-        response = self._session.get(f"{self._url}/pet/findByStatus?status={self.status[_status]}")
-        return Pet(**response.json())
-
+    def find_by_status(self, status: str) -> [Pet]:
+        res = self._session.get(url=f"{self._url}/findByStatus?status={status}")
+        if res.status_code == 200:
+            pet_list = []
+            for pets in res.json():
+                pet_list.append(Pet(**pets))
+            return res.status_code, pet_list
+        else:
+            return res.status_code, res.text
 
     def get_pet_by_tags(self, tags: Tags) -> [Pet]:
         tagsString = f'tags={tags[0]}'
@@ -98,12 +97,22 @@ class PetApi:
         :param image:
         :return: status
         """
-        response = self._session.post(f"{self._url}/pet/{pet_id}/uploadImage", headers={'Content-Type': 'application/octet-stream'}, data=image)
+        response = self._session.post(f"{self._url}/pet/{pet_id}/uploadImage",
+                                      headers={'Content-Type': 'application/octet-stream'}, data=image)
         return response.status_code
 
 
-cat_category = {"id": 2, "name": "Cats"}
+my_pet = Pet(random.randint(0, 1000000),
+             g_s(),
+             {"id": 3, "name": "Dragon"},
+             ["string"],
+             [{"id": 200, "name": "jonson"}],
+             "available")
 
+my_store = PetApi(url)
+
+print(my_store.add_new_pet(my_pet))
+print(my_store.find_by_status("available"))
 
 # pet_1 = {
 #             "id": random.randint(0, 1000000),
@@ -113,7 +122,3 @@ cat_category = {"id": 2, "name": "Cats"}
 #             "tags": [{"id": 200, "name": "jonson"}],
 #             "status": "available"
 #         }
-
-
-
-
