@@ -1,4 +1,5 @@
 import pytest
+from api.account_api import *
 from models.book_model import Book
 from models.login_view_model import LoginViewModel
 from models.register_view_model import RegisterView
@@ -10,64 +11,18 @@ from models.replace_isbn import ReplaceIsbn
 from models.string_object import StringObject
 from api.account_api import AccountApi
 from api.book_store_api import BookStoreApi
-import  logging
+import logging
 import datetime
+import fixtures
 
-
-user_ID = open("models/id.txt", "r")
-token = open("models/token.txt", "r")
-userIDR = user_ID.read()
-tokenR = token.read()
-accountApi = AccountApi("https://bookstore.toolsqa.com", )
-bookStoreApi = BookStoreApi("https://bookstore.toolsqa.com")
-bookStoreApiToken = BookStoreApi("https://bookstore.toolsqa.com", tokenR)
-accountApiToken = AccountApi("https://bookstore.toolsqa.com")
 logging.basicConfig(level=logging.INFO)
 logging.basicConfig(level=logging.ERROR)
 mylogger = logging.getLogger()
 
-@pytest.fixture()
-def My_Details() -> RegisterView:
-    register_view = RegisterView("deborah770", "Deborah@770")
-    return register_view
-
-
-@pytest.fixture()
-def My_User() -> LoginViewModel:
-    login_view = LoginViewModel("deborah770", "Deborah@770")
-    return login_view
-
-
-@pytest.fixture()
-def My_List_Of_Books() -> AddListBooks:
-    C = CollectionOfIsbn("111111111")
-    addListOfBooks = AddListBooks(userIDR, [C])
-    return addListOfBooks
-
-
-@pytest.fixture()
-def My_Book() -> Book:
-    book = Book("1234", "flower", "Store Flower",
-                "deb fellous", datetime.datetime(2012, 26, 5), "paris", 566, "teva",
-                "https://www.flower.com/")
-    return book
-
-
-@pytest.fixture()
-def My_String_Object() -> StringObject:
-    user_ID = open("models/id.txt", "r")
-    string_object = StringObject("928492034182304", user_ID.read())
-    return string_object
-
-
-@pytest.fixture()
-def My_Replace_Isbn() -> ReplaceIsbn:
-    userID = open("models/id.txt", "r")
-    replace_isbn = ReplaceIsbn(userID.read(), "gdghfyjfyggdsdytfj")
-    return replace_isbn
 
 
 def test_post_user(My_Details, My_User):
+    global user_ID, token
     mylogger.info("test for create new user")
     res_post_user = accountApi.post_user(My_Details)
     assert res_post_user.status_code == 201
