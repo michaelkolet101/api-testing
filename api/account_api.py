@@ -1,8 +1,10 @@
 import requests
+import json
+from models.user import *
 
 
 class AccountApi:
-    def __init__(self, url=None):
+    def __init__(self, url: str=None):
         if url is None:
             self.url = "https://bookstore.toolsqa.com"
         else:
@@ -32,6 +34,6 @@ class AccountApi:
 
     def get_user_by_id(self, user_id: str):
         res = self.session.get(url=f"{self.url}/Account/v1/User/{user_id}")
-        return res
+        return User(**res.json())
 
 

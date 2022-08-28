@@ -4,7 +4,7 @@ from models.login_view_model import LoginViewModel
 from models.register_view_model import RegisterView
 from models.collection_of_isbn import CollectionOfIsbn
 from models.add_list_of_books import AddListBooks
-from models.create_user_result import CreateUserResult
+from models.user import CreateUserResult
 from models.get_user_result import GetUserResult
 from models.replace_isbn import ReplaceIsbn
 from models.string_object import StringObject
@@ -12,21 +12,25 @@ from api.account_api import AccountApi
 from api.book_store_api import BookStoreApi
 import logging
 import datetime
+import sys
+
 
 
 
 
 def get_url():
-    url 
-
+    url = "https://bookstore.toolsqa.com"
+    if len(sys.argv) > 1:
+        url = sys.argv[1]
+    return url
 
 user_ID = ""
 token = ""
 
-accountApi = AccountApi("https://bookstore.toolsqa.com")
-bookStoreApi = BookStoreApi("https://bookstore.toolsqa.com")
-bookStoreApiToken = BookStoreApi("https://bookstore.toolsqa.com")
-accountApiToken = AccountApi("https://bookstore.toolsqa.com")
+accountApi = AccountApi(get_url())
+bookStoreApi = BookStoreApi(get_url())
+bookStoreApiToken = BookStoreApi(get_url())
+accountApiToken = AccountApi(get_url())
 logging.basicConfig(level=logging.INFO)
 logging.basicConfig(level=logging.ERROR)
 mylogger = logging.getLogger()
