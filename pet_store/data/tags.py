@@ -17,7 +17,7 @@ class Tags(baseObj):
         return self._id
 
     @id.setter
-    def id(self, Id):
+    def id(self, id: int):
         """Sets the id of this Tags.
         :param id: The id of this Tags.
         :type: int
@@ -33,7 +33,7 @@ class Tags(baseObj):
         return self._name
 
     @name.setter
-    def name(self, name):
+    def name(self, name: str):
         """Sets the name of this Tags.
         :param name: The name of this Tags.  # noqa: E501
         :type: str

@@ -4,24 +4,20 @@ import datetime
 
 class Order(baseObj):
 
-    def __init__(self, id: int, petId: int, quantity=None, shipDate=None, status=None, complete=None):
+    def __init__(self,
+                 id: int,
+                 petId: int,
+                 quantity,
+                 shipDate,
+                 status,
+                 complete):
 
-        self._id = None
-        self._petId = None
-        self._quantity = None
-        self._shipDate = None
-        self._status = None
-        self._complete = None
 
         self._id = id
         self._petId = petId
-
         self._quantity = quantity
-
         self._shipDate = shipDate
-
         self._status = status
-
         self._complete = complete
 
     @property

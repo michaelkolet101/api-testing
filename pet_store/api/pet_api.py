@@ -114,11 +114,11 @@ my_store = PetApi(url)
 print(my_store.add_new_pet(my_pet))
 print(my_store.find_by_status("available"))
 
-# pet_1 = {
-#             "id": random.randint(0, 1000000),
-#             "name": g_s(),
-#             "category": {"id": 3, "name": "Dragon"},
-#             "photoUrls": ["string"],
-#             "tags": [{"id": 200, "name": "jonson"}],
-#             "status": "available"
-#         }
+pet_1 = {
+            "id": random.randint(0, 1000000),
+            "name": g_s(),
+            "category": {"id": 3, "name": "Dragon"},
+            "photoUrls": ["string"],
+            "tags": [{"id": 200, "name": "jonson"}],
+            "status": "available"
+        }

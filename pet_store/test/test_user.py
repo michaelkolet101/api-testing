@@ -1,7 +1,6 @@
 import json
 import logging
 import pytest
-import allure
 
 from pet_store.test.fixtures.pet_store_fixtures import *
 
@@ -23,12 +22,12 @@ def test_create_user(MUser, users):
     verification_user_add(users ,MUser)
 
 def test_create_with_list(uesrs_list, users):
-    my_list = uesrs_list
-    user_name1 = my_list[0].username
-    user_name2 = my_list[1].username
-    logging.info(my_list)
-    j_list = [json.dumps(item) for item in my_list]
-    status = users.create_with_list(json.dumps(my_list))
+
+    user_name1 = uesrs_list()[0].username
+    user_name2 = uesrs_list()[1].username
+    logging.info(uesrs_list)
+    j_list = [json.dumps(item) for item in uesrs_list]
+    status = users.create_with_list(json.dumps(uesrs_list))
     logging.info(status)
     assert status == 200
     assert user_name1 == users.get_user_by_user_name(user_name1).username

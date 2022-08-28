@@ -24,20 +24,78 @@ def set_url():
     return url
 
 
+pet_1 = {
+            "id": random.randint(0, 1000000),
+            "name": g_s(),
+            "category": {"id": 3, "name": "Dragon"},
+            "photoUrls": ["string"],
+            "tags": [{"id": 200, "name": "jonson"}],
+            "status": "available"
+        }
+
+
+user_1 = {
+  "id": random.randint(0, 100000),
+  "username": g_s(),
+  "firstName": "John",
+  "lastName": "James",
+  "email": "john@email.com",
+  "password": "12345",
+  "phone": "12345",
+  "userStatus": 1
+}
+
+
+user_2 = {
+  "id": random.randint(0, 100000),
+  "username": g_s(),
+  "firstName": "Mich",
+  "lastName": "Kolet",
+  "email": "john@email.com",
+  "password": "12345",
+  "phone": "12345",
+  "userStatus": 1
+}
+
+
+order_1 = {
+    "id": random.randint(0, 1000),
+    "petId": random.randint(0, 1000),
+    "quantity": 7,
+    "shipDate": "2022-08-01T14:16:51.403Z",
+    "status": "approved",
+    "complete": True
+}
+
+
+user_3 = {
+  "id": random.randint(0, 100000),
+  "username": g_s(),
+  "firstName": "Mich",
+  "lastName": "Kolet",
+  "email": "john@email.com",
+  "password": "12345",
+  "phone": "12345",
+  "userStatus": 1
+}
+
+
+user_4 = {
+  "id": random.randint(0, 100000),
+  "username": g_s(),
+  "firstName": "Michl",
+  "lastName": "Kolet",
+  "email": "john@email.com",
+  "password": "12345",
+  "phone": "12345",
+  "userStatus": 1
+}
+
 # def MPet() -> Pet:
-#     category = Category(234, g_s())
-#     photoUrls = ["https://en.wikipedia.org/wiki/Cat#/media/File:Cat_poster_1.jpg"]
-#     tags = [{"id": 200, "name": "jonson"}]
-#     my_pet = Pet(random.randint(0, 1000), g_s(), category, photoUrls, tags, "available")
-#     return my_pet
+#     return Pet(**pet_1)
 
+my_pet = Pet(**pet_1)
 
-my_pet = Pet(random.randint(0, 1000),
-             g_s(),
-             Category(234, g_s()),
-             ["https://en.wikipedia.org/wiki/Cat#/media/File:Cat_poster_1.jpg"],
-             [{"id": 200, "name": "jonson"}],
-             "available")
 
 @pytest.fixture
 def my_store(set_url):
@@ -47,17 +105,17 @@ def my_store(set_url):
 
 @pytest.fixture
 def new_pet_store(set_url):
-    my_store = PetApi(set_url)
-    return my_store
+    my_pet_store = PetApi(set_url)
+    return my_pet_store
 
 @pytest.fixture
 def MOrder() -> Order:
-    my_order = Order(3242, 3424, 1, datetime.datetime.now(), "placed", False)
+    my_order = Order(**order_1)
     return my_order
 
 @pytest.fixture()
 def MUser() -> User:
-    my_user = User(random.randint(0, 10000), g_s(), "2wfs324", "Deb", "Fel", "michaelkolet@gmail.com", random.randint(0, 100000), 5)
+    my_user = User(**user_1)
     return my_user
 
 
@@ -66,8 +124,8 @@ def users(set_url) -> User:
     return User(set_url)
 
 
+@pytest.fixture
 def uesrs_list() -> [User]:
-    U1 = User(random.randint(0, 10000), g_s(), "2wfs324", "tal", "tal", "tal@gmail.com", 234152433, 5)
-    U2 = User(random.randint(0, 10000), g_s(), "2wfs324", "dan", "dan", "dan@gmail.com", 836452872, 5)
-    list_of_users = [U1, U2]
+
+    list_of_users = [User(**user_1), User(**user_2), User(**user_3), User(**user_4)]
     return list_of_users

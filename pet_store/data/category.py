@@ -5,14 +5,9 @@ from pet_store.data.baseObj import baseObj
 class Category(baseObj):
 
     def __init__(self, id=None, name=None):
-        if id is not None:
-            if not str(id).isdigit():
-                raise TypeError("id must be a number!")
-            self._id = id
-        if name is not None:
-            if not isinstance(name, str):
-                raise TypeError("name must be a string!")
-            self._name = name
+
+        self._id = id
+        self._name = name
 
     @property
     def id(self):
@@ -28,8 +23,6 @@ class Category(baseObj):
         :param id: The id of this Category.  # noqa: E501
         :type: int
         """
-        if not str(Id).isdigit():
-            raise TypeError("id must be a number!")
         self._id = Id
 
     @property
@@ -46,6 +39,4 @@ class Category(baseObj):
         :param name: The name of this Category.  # noqa: E501
         :type: str
         """
-        if not isinstance(name, str):
-            raise TypeError("name must be a string!")
         self._name = name

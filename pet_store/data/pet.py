@@ -6,19 +6,20 @@ from pet_store.data.tags import Tags
 
 class Pet(baseObj):
 
-    def __init__(self, id, name, category=None, photoUrls=None, tags=None, status=None):
-        self._photo_urls = None
-        self._tags = None
-        self._status = None
+    def __init__(self,
+                 id,
+                 name,
+                 category,
+                 photoUrls: str,
+                 tags,
+                 status: str):
+
         self._id = id
         self._name = name
         self._category = category
-        if photoUrls is not None:
-            self.photo_urls = photoUrls
-        if tags is not None:
-            self.tags = tags
-        if status is not None:
-            self.status = status
+        self.photo_urls = photoUrls
+        self.tags = tags
+        self.status = status
 
     @property
     def id(self):
@@ -50,8 +51,6 @@ class Pet(baseObj):
         :param name: The name of this Pet.  # noqa: E501
         :type: str
         """
-        if name is None:
-            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
         self._name = name
 
     @property

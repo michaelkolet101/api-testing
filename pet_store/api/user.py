@@ -27,59 +27,61 @@ class Users:
         """
         user_data = user_info.to_json()
         print(user_data)
-        res = self._session.post("{https://petstore3.swagger.io/api/v3/user/}", data=user_data)
+        res = self._session.post("https://petstore3.swagger.io/api/v3/user/", data=user_data)
         return res.json()
 
-    # def create_with_list(self, users_list: json):
-    #     """
-    #     :param users_list:
-    #     :return: status_code
-    #     """
-    #     response = self._session.post(f'{self._url}/user/createWithList', data=users_list)
-    #     return response.status_code
-    #
-    # def login(self, usr_name: str, password: str):
-    #     """
-    #     :param usr_name:
-    #     :param password:
-    #     :return: status_code
-    #     """
-    #     response = self._session.get(f'{self._url}/user/login?username={usr_name}&password={password}')
-    #     return response.status_code
-    #
-    # def logout(self):
-    #     """
-    #     logout
-    #     :return: status
-    #     """
-    #     response = self._session.get(f'{self._url}/user/logout')
-    #     return response.status_code
-    #
-    # def get_user_by_user_name(self, user_name: str) -> User:
-    #     """
-    #     :param user_name:
-    #     :return: User
-    #     """
-    #     response = self._session.get(f'{self._url}/user/{user_name}')
-    #     return User(*response.json())
-    #
-    # def Update_user(self, user_info: User):
-    #     """
-    #     :param user_info:
-    #     :param user_name_to_change:
-    #     :return: status
-    #     """
-    #     user_data = user_info.to_json()
-    #     res = self._session.put(url=f"{self._url}/{user_info.username}", data=user_data)
-    #     return res
-    #
-    # def delete_username(self, username: str):
-    #     """
-    #     :param username:
-    #     :return:
-    #     """
-    #     response = self._session.delete(f"{self._url}/{username}")
-    #     return response
+    def create_with_list(self, users_list: list):
+        """
+        :param users_list:
+        :return: status_code
+        """
+        for item in users_list:
+            item = item.to_json()
+        response = self._session.post(f'{self._url}/user/createWithList', data=users_list)
+        return response.status_code
+
+    def login(self, usr_name: str, password: str):
+        """
+        :param usr_name:
+        :param password:
+        :return: status_code
+        """
+        response = self._session.get(f'{self._url}/user/login?username={usr_name}&password={password}')
+        return response.status_code
+
+    def logout(self):
+        """
+        logout
+        :return: status
+        """
+        response = self._session.get(f'{self._url}/user/logout')
+        return response.status_code
+
+    def get_user_by_user_name(self, user_name: str) -> User:
+        """
+        :param user_name:
+        :return: User
+        """
+        response = self._session.get(f'{self._url}/user/{user_name}')
+        return User(**response.json())
+
+    def Update_user(self, user_info: User):
+        """
+        :param user_info:
+        :param user_name_to_change:
+        :return: status
+        """
+        user_data = user_info.to_json()
+        res = self._session.put(url=f"{self._url}/{user_info.username}", data=user_data)
+        return res
+
+    def delete_username(self, username: str):
+        """
+        :param username:
+        :return:
+        """
+        response = self._session.delete(f"{self._url}/{username}")
+        return response
 
 
 
@@ -129,14 +131,16 @@ user_4 = {
 
 
 uesrs = Users(url)
+list_of_users = [User(**user_1), User(**user_2), User(**user_3), User(**user_4)]
 
 U1 = User(**user_1)
+print(U1.email)
 
 print(uesrs.create_user(U1))
+#print(uesrs.create_with_list(list_of_users))
 
 
-list_of_users = [user_1, user_2, user_3, user_4]
-
+print(uesrs.login(U1.username, U1.password))
 
 
 
