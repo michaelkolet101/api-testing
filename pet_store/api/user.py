@@ -6,7 +6,13 @@ from pet_store.data.generat_string import g_s
 import requests
 
 
-class User:
+url = "https://petstore3.swagger.io/api/v3/"
+if len(sys.argv) > 1:
+    url = sys.argv[1]
+
+
+
+class Users:
 
     def __init__(self, url: str):
         self._url = url
@@ -20,64 +26,63 @@ class User:
         :return: status_code
         """
         user_data = user_info.to_json()
-        res = self._session.post(url=f"{self._url}", data=user_data)
-        return res.status_code
+        print(user_data)
+        res = self._session.post("{https://petstore3.swagger.io/api/v3/user/}", data=user_data)
+        return res.json()
 
-    def create_with_list(self, users_list: json):
-        """
-        :param users_list:
-        :return: status_code
-        """
-        response = self._session.post(f'{self._url}/user/createWithList', data=users_list)
-        return response.status_code
+    # def create_with_list(self, users_list: json):
+    #     """
+    #     :param users_list:
+    #     :return: status_code
+    #     """
+    #     response = self._session.post(f'{self._url}/user/createWithList', data=users_list)
+    #     return response.status_code
+    #
+    # def login(self, usr_name: str, password: str):
+    #     """
+    #     :param usr_name:
+    #     :param password:
+    #     :return: status_code
+    #     """
+    #     response = self._session.get(f'{self._url}/user/login?username={usr_name}&password={password}')
+    #     return response.status_code
+    #
+    # def logout(self):
+    #     """
+    #     logout
+    #     :return: status
+    #     """
+    #     response = self._session.get(f'{self._url}/user/logout')
+    #     return response.status_code
+    #
+    # def get_user_by_user_name(self, user_name: str) -> User:
+    #     """
+    #     :param user_name:
+    #     :return: User
+    #     """
+    #     response = self._session.get(f'{self._url}/user/{user_name}')
+    #     return User(*response.json())
+    #
+    # def Update_user(self, user_info: User):
+    #     """
+    #     :param user_info:
+    #     :param user_name_to_change:
+    #     :return: status
+    #     """
+    #     user_data = user_info.to_json()
+    #     res = self._session.put(url=f"{self._url}/{user_info.username}", data=user_data)
+    #     return res
+    #
+    # def delete_username(self, username: str):
+    #     """
+    #     :param username:
+    #     :return:
+    #     """
+    #     response = self._session.delete(f"{self._url}/{username}")
+    #     return response
 
-    def login(self, usr_name: str, password: str):
-        """
-        :param usr_name:
-        :param password:
-        :return: status_code
-        """
-        response = self._session.get(f'{self._url}/user/login?username={usr_name}&password={password}')
-        return response.status_code
-
-    def logout(self):
-        """
-        logout
-        :return: status
-        """
-        response = self._session.get(f'{self._url}/user/logout')
-        return response.status_code
-
-    def get_user_by_user_name(self, user_name: str) -> User:
-        """
-        :param user_name:
-        :return: User
-        """
-        response = self._session.get(f'{self._url}/user/{user_name}')
-        return User(*response.json())
-
-    def Update_user(self, user_info: User):
-        """
-        :param user_info:
-        :param user_name_to_change:
-        :return: status
-        """
-        user_data = user_info.to_json()
-        res = self._session.put(url=f"{self._url}/{user_info.username}", data=user_data)
-        return res
-    
-    def delete_username(self, username: str):
-        """
-        :param username:
-        :return:
-        """
-        response = self._session.delete(f"{self._url}/{username}")
-        return response
 
 
-url = 'https://petstore3.swagger.io/api/v3'
-# sys.argv[1]
-users = User(url)
 
 user_1 = {
   "id": random.randint(0, 100000),
@@ -121,6 +126,13 @@ user_4 = {
   "phone": "12345",
   "userStatus": 1
 }
+
+
+uesrs = Users(url)
+
+U1 = User(**user_1)
+
+print(uesrs.create_user(U1))
 
 
 list_of_users = [user_1, user_2, user_3, user_4]
